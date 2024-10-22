@@ -172,17 +172,27 @@ function ctor_highlighter()
     {
       return innerHTML.replace(/([\r\n]*?^\s*\()(.*)([\s\S]*?)(^\s*\))/gm, function(ASIS, OPEN, OPTS, CONT, CLOSE)
       {
+        var allow_comments = false;
+        var allow_escape_sequences = true;
+        var allow_var_refs = true;
         var opts = (OPTS + (forced_opts ? ' ' + forced_opts : '')).split(/\s+/);
         for (var i in opts)
-          if (opts[i].indexOf(')') != -1 && !opts[i].match(/^join/i))
+        {
+          var opt = opts[i];
+          if (opt.match(/[)]/) && !opt.match(/^join/i))
             return OPEN + OPTS + continuation_sections(CONT + CLOSE);
-        if (opts.indexOf('comments') == -1 && opts.indexOf('comment') == -1 && opts.indexOf('com') == -1 && opts.indexOf('c') == -1)
+          else if (opt.match(/^c(omments?|om)?$/i))
+            allow_comments = true;
+          else if (opt == '`')
+            allow_escape_sequences = false;
+          else if (opt == '%')
+            allow_var_refs = false;
+        }
+        if (!allow_comments)
           CONT = resolve_placeholders(CONT, 'em|sct');
-        if (opts.indexOf('`') == -1)
-          CONT = escape_sequences(CONT);
         if (is_inside_quotes)
         {
-          CONT = escape_sequences(CONT, '""');
+          CONT = escape_sequences(CONT, allow_escape_sequences ? '`""|""|`.' : '""');
           if (CONT.indexOf('"') != -1 && (c = CONT.split('"')).length % 2)
           {
             var first = wrap(c.shift() + '"', 'str', null);
@@ -195,13 +205,15 @@ function ctor_highlighter()
         }
         else if (is_literal)
         {
-          if (opts.indexOf('%') == -1)
-            CONT = string_with_var_refs(CONT);
-          else
-            CONT = wrap(CONT, 'str', null);
+          if (allow_escape_sequences)
+            CONT = escape_sequences(CONT);
+          CONT = allow_var_refs ? string_with_var_refs(CONT) : wrap(CONT, 'str', null);
         }
         else
+        {
+          CONT = strings(CONT, allow_escape_sequences);
           CONT = expressions(CONT);
+        }
         return ph('cont', OPEN + OPTS + CONT + CLOSE, ASIS);
 
         /**
@@ -399,7 +411,7 @@ function ctor_highlighter()
       return innerHTML.replace(/^(\s*)(:.*?:)(.*)(::)(.*?(?=\s+<(?:em|sct)\d+><\/(?:em|sct)\d+>(?!<cont\d+>)|\s*$)(?:(?:.*[\n\r]\s*?(?:<sct\d+>|<cont\d+>).*?(?=\s*<(?:em|sct)\d+><\/(?:em|sct)\d+>|$)))*)/mg, function(ASIS, PRE, HS1, ABBR, HS2, REPL)
       {
         if (ASIS.indexOf('`::') != -1)
-          return hotstrings(escape_sequences(innerHTML, '`::'));
+          return hotstrings(escape_sequences(ASIS, '`(::|.)'));
         var out = wrap(HS1, 'lab', null) + wrap(escape_sequences(ABBR), 'str', null) + wrap(HS2, 'lab', null);
         if (REPL != '')
         {
@@ -453,12 +465,13 @@ function ctor_highlighter()
       });
     }
     /** Searches for strings, formats them and replaces them with placeholders. */
-    function strings(innerHTML)
+    function strings(innerHTML, escape)
     {
+      var escape = (typeof escape == 'undefined') ? true : escape;
       return innerHTML.replace(/((")[\s\S]*?\2)+/gm, function(STRING)
       {
         var out = '', lastIndex = 0, m;
-        STRING = escape_sequences(STRING, '(?!^)""(?!$)|`.');
+        STRING = escape_sequences(STRING, escape ? '`""|(?!^)""(?!$)|`.' : '(?!^)""(?!$)');
         var regex = /<(cont\d+)><\/\1>/g;
         while (m = regex.exec(STRING))
         {
