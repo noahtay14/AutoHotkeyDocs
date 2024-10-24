@@ -167,19 +167,12 @@ function ctor_highlighter()
     {
       return innerHTML.replace(/([\r\n]*?^\s*\()(.*)([\s\S]*?)(^\s*\))/gm, function(ASIS, OPEN, OPTS, CONT, CLOSE)
       {
-        var allow_comments = false;
-        var allow_escape_sequences = true;
-        var opts = (OPTS + (forced_opts ? ' ' + forced_opts : '')).split(/\s+/);
-        for (var i in opts)
-        {
-          var opt = opts[i];
-          if (opt.match(/[()]/) && !opt.match(/^join/i))
-            return OPEN + OPTS + continuation_sections(CONT + CLOSE);
-          else if (opt.match(/^c(omments?|om)?$/i))
-            allow_comments = true;
-          else if (opt == '`')
-            allow_escape_sequences = false;
-        }
+        var opts = OPTS + (forced_opts ? ' ' + forced_opts : '');
+        opts = opts.replace(/(^|\s+)(join\S*|(l|r)trim0?|<(em|sct)\d+><\/(em|sct)\d+>)|/gi, '');
+        if (opts.indexOf('(') != -1 || opts.indexOf(')') != -1)
+          return OPEN + OPTS + continuation_sections(CONT + CLOSE);
+        var allow_comments = (opts.indexOf('c') != -1 || opts.indexOf('C') != -1);
+        var allow_escape_sequences = (opts.indexOf('`') == -1);
         if (!allow_comments)
           CONT = resolve_placeholders(CONT, 'em|sct');
         if (is_literal)
