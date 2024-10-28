@@ -206,26 +206,6 @@ function ctor_highlighter()
           CONT = expressions(CONT);
         }
         return ph('cont', OPEN + OPTS + CONT + CLOSE, ASIS);
-
-        /**
-         * Attempts to resolve placeholders to their original content.
-         * @param {string} string - The string containing placeholders.
-         * @param {string} phs - A pipe-delimited list of placeholders to resolve.
-         */
-        function resolve_placeholders(string, phs)
-        {
-          return string.replace(new RegExp('<((?:' + phs + ')\\d+)></\\1>', 'gi'), function(_, TAG)
-          {
-            if (els_raw[TAG])
-              return els_raw[TAG];
-            else
-            {
-              var div = document.createElement('div');
-              div.innerHTML = els[TAG];
-              return div.textContent || div.innerText;
-            }
-          });
-        }
       });
     }
     /** Searches for declarations, formats them and replaces them with placeholders. */
@@ -403,10 +383,10 @@ function ctor_highlighter()
       {
         if (ASIS.indexOf('`::') != -1)
           return hotstrings(escape_sequences(ASIS, '`(::|.)'));
-        var out = wrap(HS1, 'lab', null) + wrap(escape_sequences(ABBR), 'str', null) + wrap(HS2, 'lab', null);
+        var out = wrap(escape_sequences(HS1), 'lab', null) + wrap(escape_sequences(ABBR), 'str', null) + wrap(HS2, 'lab', null);
         if (REPL != '')
         {
-          if (HS1.match(/x/i)) // execute option
+          if (resolve_placeholders(HS1, 'esc').match(/x/i)) // execute option
             out += statements(REPL);
           else if (REPL.match(/<cont\d+>/))
             out += string_with_cont_sections(REPL, true);
@@ -419,10 +399,10 @@ function ctor_highlighter()
     /** Searches for hotkeys, formats them and replaces them with placeholders. */
     function hotkeys(innerHTML)
     {
-      var key_names = '(?:L|R|M)Button|XButton[1-2]|Wheel(?:Down|Up|Left|Right)|CapsLock|Space|Tab|Enter|Return|Escape|Esc|Backspace|BS|ScrollLock|Delete|Del|Insert|Ins|Home|End|PgUp|PgDn|Up|Down|Left|Right|Numpad(?:[0-9]|Dot|Ins|End|Down|PgDn|Left|Clear|Right|Home|Up|PgUp|Del|Div|Mult|Add|Sub|Enter)|NumLock|F(?:2[0-4]|1[0-9]|[1-9])|LWin|RWin|(?:L|R)?(?:Control|Ctrl|Shift|Alt)|Browser_(?:Back|Forward|Refresh|Stop|Search|Favorites|Home)|Volume_(?:Mute|Down|Up)|Media_(?:Next|Prev|Stop|Play_Pause)|Launch_(?:Mail|Media|App1|App2)|AppsKey|PrintScreen|CtrlBreak|Pause|Break|Help|Sleep|SC[0-9a-f]{1,3}|VK[0-9a-f]{1,2}|Joy(?:3[0-2]|2[0-9]|1[0-9]|[1-9])|\\S|&.+?;';
+      var key_names = '(?:L|R|M)Button|XButton[1-2]|Wheel(?:Down|Up|Left|Right)|CapsLock|Space|Tab|Enter|Return|Escape|Esc|Backspace|BS|ScrollLock|Delete|Del|Insert|Ins|Home|End|PgUp|PgDn|Up|Down|Left|Right|Numpad(?:[0-9]|Dot|Ins|End|Down|PgDn|Left|Clear|Right|Home|Up|PgUp|Del|Div|Mult|Add|Sub|Enter)|NumLock|F(?:2[0-4]|1[0-9]|[1-9])|LWin|RWin|(?:L|R)?(?:Control|Ctrl|Shift|Alt)|Browser_(?:Back|Forward|Refresh|Stop|Search|Favorites|Home)|Volume_(?:Mute|Down|Up)|Media_(?:Next|Prev|Stop|Play_Pause)|Launch_(?:Mail|Media|App1|App2)|AppsKey|PrintScreen|CtrlBreak|Pause|Break|Help|Sleep|SC[0-9a-f]{1,3}|VK[0-9a-f]{1,2}|Joy(?:3[0-2]|2[0-9]|1[0-9]|[1-9])|\\S|`\\S|&.+?;';
       return innerHTML.replace(new RegExp('^(\\s*)((?:(?:[#!^+*~$]|&lt;|&gt;)*(?:' + key_names + ')(?:\\s+up)?|~?(?:' + key_names + ')\\s+&amp;\\s+~?(?:' + key_names + ')(?:\\s+up)?)::)([\\t ]*)(.*)(?=\\s+<(?:em|sct)\\d+></(?:em|sct)\\d+>|$)', 'gim'), function(ASIS, PRE, HK, SPACE, ACTION)
       {
-        var out = wrap(HK, 'lab', null) + SPACE;
+        var out = wrap(escape_sequences(HK), 'lab', null) + SPACE;
         if (ACTION != '')
         {
           if ((ACTION.split('"').length - 1) == 1) // quote count
@@ -438,9 +418,9 @@ function ctor_highlighter()
     /** Searches for labels, formats them and replaces them with placeholders. */
     function labels(innerHTML)
     {
-      return innerHTML.replace(/^(\s*)([^\s,`]+?:)(?=\s*(<(em|sct)\d+><\/(em|sct)\d+>|$))/mg, function(_, PRE, LABEL)
+      return innerHTML.replace(/^(\s*)([^\s,]+?:)(?=\s*(<(em|sct)\d+><\/(em|sct)\d+>|$))/mg, function(_, PRE, LABEL)
       {
-        return PRE + ph('lab', wrap(LABEL, 'lab', null));
+        return PRE + ph('lab', wrap(escape_sequences(LABEL), 'lab', null));
       });
     }
     /** Searches for legacy assignments, formats them and replaces them with placeholders. */
@@ -664,6 +644,26 @@ function ctor_highlighter()
       if (raw)
         els_raw[tagName] = raw;
       return '<' + tagName + '></' + tagName + '>';
+    }
+    /**
+     * Attempts to resolve placeholders to their original content.
+     * @param {string} string - The string containing placeholders.
+     * @param {string} phs - A pipe-delimited list of placeholders to resolve (regex).
+     * @returns {string} The original string.
+     */
+    function resolve_placeholders(string, phs)
+    {
+      return string.replace(new RegExp('<((?:' + phs + ')\\d+)></\\1>', 'gi'), function(_, TAG)
+      {
+        if (els_raw[TAG])
+          return els_raw[TAG];
+        else
+        {
+          var div = document.createElement('div');
+          div.innerHTML = els[TAG];
+          return div.textContent || div.innerText;
+        }
+      });
     }
     /**
      * Temporarily exclude syntax parts to facilitate syntax detection.
