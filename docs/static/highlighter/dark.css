@@ -18,7 +18,8 @@
   color: #ce9178;
 }
 
-.highlight .str>.esc {
+.highlight .str>.esc,
+.highlight .lab>.esc {
   color: #d7ba7d;
 }
 
