@@ -380,7 +380,7 @@ Background: Without the tilde, Alt/Control/Shift fire upon release to avoid taki
 <p>Added built-in variables <a href="Variables.htm#AppData">A_AppData</a>, <a href="Variables.htm#AppDataCommon">A_AppDataCommon</a>, and <a href="Variables.htm#Temp">A_Temp</a> (A_Temp is the folder designated to hold temporary files).</p>
 
 <h2 id="v1.0.43.08">1.0.43.08 - April 17, 2006</h2>
-<p>Changed <a href="lib/Send.htm#SendInputDetail">SendInput</a> to use <code><a href="lib/SetKeyDelay.htm">SetKeyDelay</a> -1, 0</code> when it reverts to <a href="lib/Send.htm#SendEvent">SendEvent mode</a> (unless SendEvent's KeyDelay <code>-1,-1</code>, in which case <code>-1,-1</code> is used).</p>
+<p>Changed <a href="lib/Send.htm#SendInputDetail">SendInput</a> to use <code><a href="lib/SetKeyDelay.htm">SetKeyDelay</a> -1, 0</code> when it reverts to <a href="lib/Send.htm#SendEvent">SendEvent mode</a> (unless SendEvent's KeyDelay is <code>-1,-1</code>, in which case <code>-1,-1</code> is used).</p>
 <p>Added directive <a href="lib/_NoEnv.htm">#NoEnv</a>, which is recommended for all new scripts because:</p>
 <ol>
   <li>It significantly improves performance whenever empty variables are used in an expression or command. It also improves <a href="lib/DllCall.htm">DllCall</a>'s performance when unquoted parameter types are used (e.g. Int vs. "Int").</li>
@@ -426,7 +426,7 @@ Background: Without the tilde, Alt/Control/Shift fire upon release to avoid taki
 <p>Fixed <a href="Hotkeys.htm#Tilde">tilde hotkeys</a> so that if they remove a hook, their own key doesn't get stuck down (e.g. <a href="scripts/MouseGestures.htm">Mouse Gestures script</a> and <code>~LCtrl::Hotkey, RButton, Off</code>). [thanks Stefan Taubenberger]</p>
 
 <h2 id="v1.0.43.00">1.0.43 - March 25, 2006</h2>
-<p class="note"><strong>Note: </strong>Although this release has been extensively tested and is not expected to break any existing scripts, several changes were made to the sending of keystrokes and mouse clicks. If you have any mission-critical scripts that rely on such features, it is recommended that they be re-tested or that you wait two weeks for any bugs to get fixed.</p>
+<p class="note"><strong>Note:</strong> Although this release has been extensively tested and is not expected to break any existing scripts, several changes were made to the sending of keystrokes and mouse clicks. If you have any mission-critical scripts that rely on such features, it is recommended that they be re-tested or that you wait two weeks for any bugs to get fixed.</p>
 <p>Fixed <a href="Hotkeys.htm#AltGr">AltGr hotkeys</a> that use <a href="lib/Send.htm">Send</a>, such as <code>&lt;^&gt;!m::Send ^c</code>. Also fixed AltGr remappings such as <code>F1::RAlt</code> [thanks foxer]</p>
 <p>Fixed inability of <a href="lib/VarSetCapacity.htm">VarSetCapacity</a> to free the memory of a <a href="Functions.htm#ByRef">ByRef parameter</a>. [thanks Corrupt]</p>
 <p>Fixed hotstring option <a href="Hotstrings.htm#b0">b0</a> to show the ending character where you typed it rather than at the end of the replacement.</p>
@@ -778,7 +778,7 @@ RCtrl::RWin  <em>; Make the right Control key become the right Windows key.</em>
 <p>Fixed <a href="lib/Transform.htm#Deref">Transform Deref</a> to support a built-in or environment variable that isn't directly referenced elsewhere in the script. [thanks toralf]</p>
 <p>Fixed inability to launch the program on Windows 95/NT systems that lack MSIE 3 or later.</p>
 <p>Fixed <a href="lib/ListLines.htm">ListLines</a>, which sometimes terminated the listing prematurely.</p>
-<p>Fixed multi-line <a href="lib/GuiControls.htm#Edit">Edit controls</a> so that pressing Escape in them does not close a <a href="lib/Gui.htm#GuiEscape">non-GuiEscape window</a>. [thanks Rajat]</p>
+<p>Fixed multi-line <a href="lib/GuiControls.htm#Edit">Edit controls</a> so that pressing <kbd>Esc</kbd> in them does not close a <a href="lib/Gui.htm#GuiEscape">non-GuiEscape window</a>. [thanks Rajat]</p>
 <p>Fixed the hotkeys <code>#LAlt::</code> and <code>#RAlt::</code> to prevent appearance of the Start Menu. [thanks Dmitry Lyudmirsky]</p>
 <p>Fixed <a href="lib/GuiControl.htm">GuiControl</a> so that reloading a <a href="lib/GuiControls.htm#Picture">Picture control</a> inside a <a href="lib/GuiControls.htm#Tab">Tab control</a> redraws properly. [thanks hanspeter]</p>
 <p>Fixed <a href="lib/VarSetCapacity.htm">VarSetCapacity()</a> when called inside an <a href="Variables.htm#Expressions">expression</a>.</p>
@@ -798,7 +798,7 @@ RCtrl::RWin  <em>; Make the right Control key become the right Windows key.</em>
 
 <h2 id="v1.0.32.00">1.0.32 - May 5, 2005</h2>
 <p>Improved <a href="lib/_Include.htm">#Include</a>: The file name may be preceded by <code>*i</code> and a single space to ignore any file errors. [thanks Tekl]</p>
-<p>Added +/-Theme as a per-control option (<a href="lib/Gui.htm">GUI)</a>. This can also be used to create a themed Tab control. [thanks Titan]</p>
+<p>Added +/-Theme as a per-control option (<a href="lib/Gui.htm">GUI</a>). This can also be used to create a themed Tab control. [thanks Titan]</p>
 <p>Added a method to break up long lines into several smaller ones. This is especially useful for <a href="Hotstrings.htm">hotstrings</a> and <a href="lib/FileAppend.htm">FileAppend</a>. See <a href="Scripts.htm#continuation">line continuation</a>. [thanks various]</p>
 
 <h2 id="v1.0.31.07">1.0.31.07 - April 29, 2005</h2>
@@ -875,7 +875,7 @@ RCtrl::RWin  <em>; Make the right Control key become the right Windows key.</em>
 <p>Improved <a href="Hotstrings.htm">hotstrings</a> with option letter "Z", which resets the hotstring recognizer after each triggering of the hotstring. The script will begin waiting for an entirely new hotstring, eliminating from consideration anything you previously typed. [thanks dennisbgoode]</p>
 <p>Added <a href="lib/WinSet.htm#Disable">WinSet Disable/Enable</a>, which disables or enables a window.</p>
 <p>Added ahk_group as a way to find window(s) matching any of the specifications in a <a href="lib/GroupAdd.htm">window group</a>. Example: <code>IfWinExist ahk_group %MyGroup%</code>. In addition, an entire group of windows can be minimized, maximized, restored, hidden, shown, or closed (e.g. <code>WinMinimize ahk_group MyGroup</code>). [thanks Rajat]</p>
-<p>Added <a href="lib/WinSet.htm#Region">WinSet Region</a>, which changes the display area of a window to be the specified ellipse, rectangle, or polygon. This allows parts of a window to be rendered invisible. [thanks Skrommmel]</p>
+<p>Added <a href="lib/WinSet.htm#Region">WinSet Region</a>, which changes the display area of a window to be the specified ellipse, rectangle, or polygon. This allows parts of a window to be rendered invisible. [thanks skrommel]</p>
 
 <h2 id="v1.0.29.00">1.0.29 - February 28, 2005</h2>
 <p>Fixed things like <code>Sleep %Seconds%000</code>, which stopped working in v1.0.25+. [thanks Mayhem]</p>
@@ -900,15 +900,15 @@ FileRead, Clipboard, *c C:\Saved clipboard.bin  <em>; Restore from a file via th
 
 <h2 id="v1.0.28.00">1.0.28 - February 22, 2005</h2>
 <p><a href="lib/FileAppend.htm">FileAppend</a>'s text parameter may be omitted to create an empty file or update the timestamp of an existing file. [thanks JSLover]</p>
-<p>The following change from v1.0.26 was undone because it is not needed: "Changed hotkeys such as <code>a &amp; b::</code> to be seen as <code>~a &amp; b::</code> if <code>~a::</code> also exists as a hotkey." In such a case, the hotkey <code>~a::</code> causes an A keystroke to be sent whenever A wasn't held down to modify another key such as B.</p>
+<p>The following fix from v1.0.26 was undone because it is not needed: "Fixed <a href="Hotkeys.htm">hotkeys</a> such as <code>a &amp; b::</code> to be seen as <code>~a &amp; b::</code> if <code>~a::</code> also exists as a hotkey, and vice versa." In such a case, the hotkey <code>~a::</code> causes an A keystroke to be sent whenever A wasn't held down to modify another key such as B.</p>
 <p>Improved <a href="lib/SoundPlay.htm">SoundPlay</a> to play standard system sounds (hand, question, exclamation, and asterisk). [thanks Mythos]</p>
-<p>Improved the tray icon to optionally be unaffected by <a href="lib/Pause.htm">Pause</a> and <a href="lib/Suspend.htm">Suspend</a>. The icon can be "frozen" by specifying 1 as the last parameter of the <a href="lib/Menu.htm">Menu</a> command. Example: <code>Menu, Tray, Icon, C:\My Icon.ico,, 1</code></p>
+<p>Improved the tray icon to optionally be unaffected by <a href="lib/Pause.htm">Pause</a> and <a href="lib/Suspend.htm">Suspend</a>. The icon can be "frozen" by specifying 1 as the last parameter of the <a href="lib/Menu.htm">Menu</a> command. Example: <code>Menu, Tray, Icon, C:\My Icon.ico, , 1</code></p>
 <p>Added ahk_pid as a way to find window(s) matching a <a href="lib/Process.htm">process identifier (PID)</a>. Example: <code>WinClose ahk_pid %VarContainingPID% <em>; Closes only the first matching window.</em></code></p>
 <p>Added command <a href="lib/SoundBeep.htm">SoundBeep</a>, which emits a tone from the PC speaker. [thanks Tekl]</p>
 <p>Added support for <a href="Hotkeys.htm">hotkeys</a> that fire upon release of a key. Examples:</p>
 <pre>*LWin::Send {LControl down}
-*LWin up::Send {LControl up}
-^!r up::MsgBox You pressed and released Ctrl+Alt+R.</pre>
+*LWin Up::Send {LControl up}
+^!r Up::MsgBox You pressed and released Ctrl+Alt+R.</pre>
 
 <h2 id="v1.0.27.01">1.0.27.01 - February 17, 2005</h2>
 <p>Fixed <a href="lib/Gui.htm#Options">Gui -Caption</a> (and perhaps others) to work even if the window is visible. [thanks Watcher]</p>
@@ -918,9 +918,9 @@ FileRead, Clipboard, *c C:\Saved clipboard.bin  <em>; Restore from a file via th
 <p>Changed <a href="Variables.htm#OSVersion">A_OSVersion</a> to recognize Windows Server 2003 (as WIN_2003).</p>
 <p><a href="lib/PostMessage.htm">Post/SendMessage</a> can broadcast to ALL windows via <code>ahk_id 0xFFFF</code>, as intended. [thanks Mythos]</p>
 <p>If you're using <a href="lib/PostMessage.htm">Post/SendMessage</a> to trigger menu items created via the <a href="lib/Menu.htm">Menu</a> command, each ID is now 10,000 higher than it was before.</p>
-<p>Improved <a href="lib/Run.htm">RunWait</a> to support OutputVarPID (like the Run command).</p>
+<p>Improved <a href="lib/Run.htm">RunWait</a> to support <em>OutputVarPID</em> (like the Run command).</p>
 <p>Added built-in variables <a href="Variables.htm#IsCompiled">A_IsCompiled</a> and <a href="Variables.htm#IsSuspended">A_IsSuspended</a>, which contain 1 if the script is running as a compiled EXE or is suspended, respectively. [thanks Mythos]</p>
-<p>Added commanded <a href="lib/OutputDebug.htm">OutputDebug</a>, which sends a string to the debugger (if any) for display. [thanks procyon]</p>
+<p>Added command <a href="lib/OutputDebug.htm">OutputDebug</a>, which sends a string to the debugger (if any) for display. [thanks procyon]</p>
 <p><strong>Changes for <a href="lib/Gui.htm">GUI</a>:</strong></p>
 <p>Fixed windows containing <a href="lib/GuiControls.htm#Tab">Tab controls</a>: previously, controls outside the Tab control were sometimes invisible when the window was first shown. [thanks ranomore]</p>
 <p>Changed <a href="lib/GuiControl.htm#options">GuiControl +/-Options</a> to set ErrorLevel to 1 (failure) if none of the specified styles are allowed to be applied.</p>
@@ -1014,7 +1014,7 @@ FileRead, Clipboard, *c C:\Saved clipboard.bin  <em>; Restore from a file via th
 <p>Changed <a href="lib/Transform.htm#Pow">Transform Pow</a> to yield a blank string rather than 0.00 when zero is raised to a negative power.</p>
 <p>Changed <a href="Scripts.htm#ahk2exe">compiled scripts</a> so that the version resource shows the version number rather than being entirely blank. [thanks g4]</p>
 <p>Changed <a href="lib/FileAppend.htm">FileAppend</a> so that the file is automatically opened in binary mode if the text to be written contains any carriage return and linefeed pairs (<code>`r`n</code>). In other words, the asterisk option is put into effect automatically. However, specifying the asterisk when appropriate improves performance because the program does not need to scan for <code>`r`n</code>.</p>
-<p>Changed <a href="lib/LoopReadFile.htm">file-reading loops</a> so that the output file is not opened if nothing is ever written to it. This happens if the Loop performs zero iterations or if it never uses the <a href="lib/FileAppend.htm">FileAppend</a> command. In addition, the file is automatically opened in binary mode if the Loop's first use of FileAppend writes any carriage return and linefeed pairs (<code>`r`n</code>). In other words, the asterisk option is put into effect automatically. These changes might break existing scripts that rely upon: 1) a zero-length file being created by the loop; or 2) the file's modification time being changed by the loop even if it didn't write any text to the file.</p>
+<p>Changed <a href="lib/LoopReadFile.htm">file-reading loops</a> so that the output file is not opened if nothing is ever written to it. This happens if the loop performs zero iterations or if it never uses the <a href="lib/FileAppend.htm">FileAppend</a> command. In addition, the file is automatically opened in binary mode if the loop's first use of FileAppend writes any carriage return and linefeed pairs (<code>`r`n</code>). In other words, the asterisk option is put into effect automatically. These changes might break existing scripts that rely upon: 1) a zero-length file being created by the loop; or 2) the file's modification time being changed by the loop even if it didn't write any text to the file.</p>
 <p>Removed runtime validation of numeric parameters (to help performance). Formerly, a command such as <code>SetKeyDelay %Var%</code> would produce a runtime error if Var contained something non-numeric. Most commands now treat non-numeric parameters as zero.</p>
 <p>Improved the <a href="lib/Progress.htm">Progress</a> command with options for starting position and having a range other than 0 to 100. [thanks ranomore]</p>
 <p>Improved the <a href="lib/Send.htm">Send</a> command so that mouse buttons can be held down or released as in this example: <code>Send {LButton down}</code></p>
@@ -1123,7 +1123,7 @@ FileRead, Clipboard, *c C:\Saved clipboard.bin  <em>; Restore from a file via th
 <p>Fixed <a href="lib/ToolTip.htm">ToolTip</a> so that the tip window can be displayed on non-primary monitors in a multi-monitor system. [thanks Jack Horsfield] </p>
 <p>Changed <a href="lib/PixelGetColor.htm">PixelGetColor</a> and Window Spy to retrieve colors in hexadecimal rather than decimal format, which makes it easier to visualize a color based on its blue, green, and red components. This change should not affect existing scripts. [thanks Bobo]</p>
 <p>Improved Window Spy with a more useful layout and to show the text of the control under the mouse.</p>
-<p>Improved the <a href="lib/Input.htm">Input</a> command to optionally recognize and transcribe modified keystrokes such as Control-A through Control-Z if they correspond to real ASCII characters. The following example recognizes Control-C:</p>
+<p>Improved the <a href="lib/Input.htm">Input</a> command to optionally recognize and transcribe modified keystrokes such as <kbd>Ctrl</kbd>+<kbd>A</kbd> through <kbd>Ctrl</kbd>+<kbd>Z</kbd> if they correspond to real ASCII characters. The following example recognizes <kbd>Ctrl</kbd>+<kbd>C</kbd>:</p>
 <pre>Transform, CtrlC, Chr, 3  <em>; Store the character for Ctrl-C in the CtrlC var.</em>
 Input, OutputVar, L1 M
 IfEqual, OutputVar, %CtrlC%, MsgBox, You pressed Control-C.</pre>
@@ -1188,7 +1188,7 @@ IfEqual, OutputVar, %CtrlC%, MsgBox, You pressed Control-C.</pre>
 <p>Added an option to change the background color of a menu via <code><a href="lib/Menu.htm">Menu</a>, MenuName, Color, ColorValue</code> (has no effect on Windows 95/NT).</p>
 <p>Added command <a href="lib/KeyWait.htm">KeyWait</a>, which waits for a key or mouse/joystick button to be released or pressed down.</p>
 <p>Added command "<a href="lib/IfIn.htm">if var [not] contains MatchList</a>", which is the same as using <a href="lib/IfInString.htm">IfInString/IfNotInString</a> except that multiple search strings are supported (any one of which will cause a match). [thanks whynot]</p>
-<p>Added command <a href="lib/Gui.htm">GUI</a>, which creates and manages windows and controls. Such windows can be used as data entry forms or as custom user interfaces. </p>
+<p>Added command <a href="lib/Gui.htm">GUI</a>, which creates and manages windows and controls. Such windows can be used as data entry forms or custom user interfaces. </p>
 
 <h2 id="v1.0.18.00">1.0.18 - August 19, 2004</h2>
 <p>Fixed sticking modifier keys (Ctrl, Alt, Shift, and Win) -- at least in some cases. This should help prevent <a href="lib/_UseHook.htm">hook hotkeys</a> from unexpectedly firing when the user isn't even holding down any modifier keys. The fix operates by correcting the hook's modifier state whenever it disagrees with what the OS says it should be.</p>
@@ -1214,9 +1214,9 @@ Shift::MsgBox You released a Shift key without having used it to modify another 
 <p>Fixed command <a href="lib/Suspend.htm">Suspend</a>, which sometimes permanently disabled all <a href="Hotstrings.htm">hotstrings</a>. [thanks Loneaussie]</p>
 <p>Fixed commands <a href="lib/Suspend.htm">Suspend</a> and <a href="lib/Hotkey.htm">Hotkey</a> so that they avoid resetting the state of hotkeys that the user is holding down. [thanks WhiteCloud]</p>
 <p>Fixed the <a href="lib/Input.htm">Input</a> command so that a match-list contained in a variable will not be ignored if its first character is a comma. [thanks Rajat]</p>
-<p>Changed the <a href="lib/Input.htm">Input</a> command's <em>MatchList</em> so that two consecutive commas results in a single literal comma. In this example, a single literal comma is included at the end of word1: <code>word1,,,word2</code>.</p>
+<p>Changed the <a href="lib/Input.htm">Input</a> command's <em>MatchList</em> so that two consecutive commas results in a single literal comma. For example, the following would produce a single literal comma at the end of string1: <code>string1,,,string2</code>.</p>
 <p>Added sub-command <a href="lib/Transform.htm#Deref">Transform Deref</a>, which expands variable references and escape sequences contained inside other variables. [thanks various]</p>
-<p>Added built-in variable <a href="Variables.htm#EndChar">A_EndChar</a>, which is the ending character pressed by the user to trigger the most recent non-auto-replace <a href="Hotstrings.htm">hotstring</a>. If no ending character was required (due to the <code>*</code> option), this variable will be blank.</p>
+<p>Added built-in variable <a href="Variables.htm#EndChar">A_EndChar</a>, which is the ending character pressed by the user to trigger the most recent non-auto-replace <a href="Hotstrings.htm">hotstring</a>. If no ending character was required (due to the <a href="Hotstrings.htm#Asterisk">* option</a>), this variable will be blank.</p>
 <p>Added built-in variables <a href="Variables.htm#Caret">A_CaretX</a> and <a href="Variables.htm#Caret">A_CaretY</a>, which are the current X and Y coordinates of the caret (text insertion point).</p>
 
 <h2 id="v1.0.16.00">1.0.16 - July 15, 2004</h2>
@@ -1240,7 +1240,7 @@ StringTrimLeft, OutputVar, %EnvVar%, 0</pre>
 <p>Changed the <a href="lib/Input.htm">Input</a> command so that <kbd>Ctrl</kbd>+<kbd>Backspace</kbd> and other modified backspaces are ignored. Only plain backspace is used as an "undo" keystroke.</p>
 <p>Changed <a href="lib/Menu.htm">custom menu items</a> so that they cannot interrupt the <a href="lib/OnExit.htm">OnExit</a> subroutine (as documented). In addition, custom menu items now behave more like hotkeys in terms of buffering and their ability to interrupt other <a href="misc/Threads.htm">threads</a>.</p>
 <p>Increased max size of each <a href="Variables.htm">variable</a> from 16 to 64 MB (this does not increase the memory used by scripts). This can be made a configurable option if anyone needs it.</p>
-<p>It is now possible to use a literal pair of colons by <a href="misc/EscapeChar.htm">escaping</a> it, e.g. <code class="no-highlight">`::</code></p>
+<p>It is now possible to use a literal pair of colons by <a href="misc/EscapeChar.htm">escaping</a> it, e.g. <code class="no-highlight">`::</code>.</p>
 <p><a href="KeyList.htm#SpecialKeys">Scan code prefix keys</a> are now possible, e.g. <code>SC118 &amp; Enter::MsgBox</code>. [thanks Rajat]</p>
 <p>Improved <a href="lib/Progress.htm">SplashImage</a>:</p>
 <ul>
@@ -1249,7 +1249,7 @@ StringTrimLeft, OutputVar, %EnvVar%, 0</pre>
   <li>The image does not "flash" while the user is resizing the window.</li>
 </ul>
 <p>Improved <a href="lib/ControlClick.htm">ControlClick</a> so that a specific X and Y coordinate within the control can be clicked. [thanks Beastmaster]</p>
-<p>Added support for the AutoIt v2 command HideAutoItWin, which does the same thing as <code><a href="lib/Menu.htm">Menu</a>, Tray, Icon|NoIcon</code></p>
+<p>Added support for the AutoIt v2 command HideAutoItWin, which does the same thing as <code><a href="lib/Menu.htm">Menu</a>, Tray, Icon|NoIcon</code>.</p>
 <p>Added support for <a href="misc/Threads.htm">thread priority</a>, which determines whether a thread can interrupt (or be interrupted by) other threads. The following commands support setting the priority: <a href="lib/Hotkey.htm">Hotkey</a>, <a href="lib/Menu.htm">Menu</a>, <a href="lib/SetTimer.htm">SetTimer</a>, <a href="lib/_Hotstring.htm">#Hotstring</a>, and <a href="lib/Thread.htm">Thread</a> (sets the current thread's priority). In addition, <a href="Hotstrings.htm">hotstrings</a> can be individually assigned a priority when they are defined. </p>
 <p>Added commands <a href="lib/Send.htm">SendRaw</a> and <a href="lib/ControlSend.htm">ControlSendRaw</a>, which send keystrokes exactly as they appear rather than translating {Enter} to <kbd>Enter</kbd>, ^c to <kbd>Ctrl</kbd>+<kbd>C</kbd>, etc.</p>
 <p>Added <a href="Variables.htm#BuiltIn">built-in variables</a> for month name (A_MMMM and A_MMM) and day name (A_DDDD and A_DDD). In addition, A_Year may now be optionally referred to as A_YYYY, A_Mon as A_MM, and A_MDay as A_DD.</p>
@@ -1277,7 +1277,7 @@ StringTrimLeft, OutputVar, %EnvVar%, 0</pre>
 <p>Improved <a href="lib/ToolTip.htm">ToolTip</a> so that more than one tooltip window can be created. [thanks Rajat]</p>
 <p>Improved <a href="lib/FileGetTime.htm">FileGetTime</a> and <a href="lib/FileGetSize.htm">FileGetSize</a> so that they work on files that are in use, and so that they don't change the file's last access time.</p>
 <p>Improved <a href="lib/StringMid.htm">StringMid</a> to optionally extract characters to the left of the specified position. [thanks Rajat]</p>
-<p>Added text-to-HTML conversion via <a href="lib/Transform.htm#HTML">Transform HTML</a>. It translates characters whose ASCII values are above 127 to their HTML names (e.g. <code>&pound;</code> becomes <code>&amp;pound;</code>). In addition, the four characters <code>"&amp;&lt;&gt;</code> are translated to <code>&amp;quot;&amp;amp;&amp;lt;&amp;gt;</code>. Finally, each linefeed (<code>`n</code>) is translated to <code>&lt;br&gt;`n</code>.</p>
+<p>Added text-to-HTML conversion via <a href="lib/Transform.htm#HTML">Transform HTML</a>. It translates characters whose ASCII values are above 127 to their HTML names (e.g. <code>&pound;</code> becomes <code>&amp;pound;</code>). In addition, the four characters <code>"&amp;&lt;&gt;</code> are translated to <code>&amp;quot;&amp;amp;&amp;lt;&amp;gt;</code>. Finally, each linefeed (<code>`n</code>) is translated to <code>&lt;br&gt;`n</code> (i.e. <code>&lt;br&gt;</code> followed by a linefeed).</p>
 <p>Added command <a href="lib/ControlGetPos.htm">ControlGetPos</a>. [thanks Jerry]</p>
 <p>Added command <a href="lib/SplitPath.htm">SplitPath</a>, which separates a file name into its name, directory, extension, and drive.</p>
 <p>Added command <a href="lib/Progress.htm">SplashImage</a>, which displays a GIF, JPG, or BMP image with optional accompanying text.</p>
@@ -1430,7 +1430,7 @@ $^a::MsgBox ^a</pre>
 <p>Added an option to the Installer that enables drag &amp; drop onto script files. This option is disabled by default since it can lead to accidental launches. [thanks Rajat]</p>
 <p>Added Rajat's TextPad syntax file and clip library to the Extras folder, which is accessible via the Start Menu. Use the included script to install these features. Hopefully, similar add-ons for other editors will be developed in the coming months (volunteers are welcome).</p>
 <p>Added sub-command <a href="lib/Menu.htm#Rename">Menu Rename</a>.</p>
-<p>Added commands <a href="lib/PostMessage.htm">PostMessage/SendMessage.</a></p>
+<p>Added commands <a href="lib/PostMessage.htm">PostMessage/SendMessage</a>.</p>
 <p>Added command <a href="lib/RunAs.htm">RunAs</a>, which allows processes to be created under the permissions of a different user. [thanks Jonathan Bennett &amp; Robert Yaklin]</p>
 <p>Added command <a href="lib/WinSet.htm">WinSet</a>, which can make a window "always on top" or transparent.</p>
 
@@ -1461,7 +1461,7 @@ $^a::MsgBox ^a</pre>
 <p>Changed the Installer to: 1) register the EXEs that come with the program so that you don't need to specify a full path when running them directly; 2) create its program group in All Users rather than the current user; 3) correctly remember the last installation directory (if you're installing on top of an older version).</p>
 <p>Changed program startup for scripts that use the <a href="lib/_InstallKeybdHook.htm">keyboard hook</a> so that the current state of <kbd>Ctrl</kbd>/<kbd>Alt</kbd>/<kbd>Shift</kbd>/<kbd>Win</kbd> is taken into account.</p>
 <p>Changed the <a href="Scripts.htm#auto">auto-execute</a> section so that if it takes a long time to complete (or never completes), the default values for settings such as <a href="lib/SetKeyDelay.htm">SetKeyDelay</a> are put into effect after 100 milliseconds. Thus, it's usually best to make any desired changes to the default values at the top of the script. This is only important for scripts that contain <a href="Hotkeys.htm">hotkeys</a> or <a href="lib/SetTimer.htm">timers</a>. </p>
-<p>Improved <a href="lib/SetBatchLines.htm">SetBatchLines</a> to optionally accept a number of milliseconds rather than a number of lines. The millisecond method is recommended for scripts whenever speed and cooperation are important. For example, on most systems, a setting of 10ms will prevent the script from using any more than 50% of an idle CPU's time. This allows scripts to run quickly while maintaining a high level of cooperation with CPU sensitive tasks such as games and video capture/playback.</p>
+<p>Improved <a href="lib/SetBatchLines.htm">SetBatchLines</a> to optionally accept a number of milliseconds rather than a number of lines. The millisecond method is recommended for scripts whenever speed and cooperation are important. For example, on most systems a setting of 10ms will prevent the script from using any more than 50&nbsp;% of an idle CPU's time. This allows scripts to run quickly while still maintaining a high level of cooperation with CPU sensitive tasks such as games and video capture/playback.</p>
 <p>Improved hotkey buffering during critical operations (such as <a href="lib/Send.htm">Send</a>), and when a hotkey's <a href="lib/_MaxThreadsPerHotkey.htm">#MaxThreadsPerHotkey</a> setting has been reached. In other words, in most cases, the program will save up hotkey presses until they can be executed. As a side-effect, this makes holding down a hotkey (to auto-repeat it) more responsive. [thanks Jay D. Novak]</p>
 <p>Improved the performance of <a href="lib/_InstallKeybdHook.htm">hook scripts</a> that have high or infinite <a href="lib/SetBatchLines.htm">BatchLines</a>.</p>
 <p>Added the AutoScriptWriter (macro recorder) to the main installer. I think there's a problem with the save button (which will hopefully be fixed soon) but it seems to work fine otherwise. [thanks Larry Keys]</p>
@@ -1599,7 +1599,7 @@ if var is [not] time
 var2 = 20040126
 EnvSub, var1, %var2%, days
 MsgBox, %var1%  <em>; The answer will be 366 since 2004 is a leap year.</em>
-var1 =  <em>; Make it blank so that the below will use the current time instead.</em>
+var1 =  <em>; Make it blank so that the below will use the current timestamp instead.</em>
 var1 += 31, days
 MsgBox, %var1%  <em>; The answer will be the date 31 days from now.</em></pre>
 
@@ -1608,7 +1608,7 @@ MsgBox, %var1%  <em>; The answer will be the date 31 days from now.</em></pre>
 <p>Fixed a bug introduced in 0.216 that prevented <a href="lib/_HotkeyModifierTimeout.htm">#HotkeyModifierTimeout</a> from working correctly. Scripts that didn't have the keyboard hook installed would not properly compensate for keys the user was physically holding down during the Send command.</p>
 <p>Fixed <a href="lib/RegDelete.htm">RegDelete</a> so that it allows the 3rd parameter (<em>ValueName</em>) to be omitted. If omitted, the entire specified subkey will be deleted.</p>
 <p>Fixed script compiler (Ahk2Exe) crashing when given a custom icon. However, the custom icon feature still doesn't work. Hopefully it will be working for the next release.</p>
-<p>Removed the GroupCloseAll command. Instead, use "<a href="lib/GroupClose.htm">GroupClose, A</a>"</p>
+<p>Removed the GroupCloseAll command. Instead, use <code><a href="lib/GroupClose.htm">GroupClose</a>, MyGroup, A</code>.</p>
 <p>Changed <a href="lib/IfWinActive.htm">IfWin[Not]Active</a> and <a href="lib/WinWaitActive.htm">WinWait[Not]Active</a> so that they set the <a href="misc/WinTitle.htm#LastFoundWindow">Last Found window</a>. [Thanks again to Robert]. If any of your scripts use the Last Found Window feature, there's a small chance they'll need to be changed in light of this. </p>
 <p>Changed the default <a href="lib/SetWinDelay.htm">WinDelay</a> to 100 vs. 250, and the "default" <a href="lib/SetDefaultMouseSpeed.htm">DefaultMouseSpeed</a> to be 2 vs. 10 (i.e. the mouse will move faster by default). AutoIt2 (.aut) scripts still use 500 as their default WinDelay, but now use 2 vs. 1 as their default mouse speed (since Jon has said that values less than 2 sometimes don't work with MouseClickDrag). If anyone thinks these may be too aggressive, let me know.</p>
 <p>Improved <a href="lib/MsgBox.htm">MsgBox</a> with smart comma handling: Commas do not need to be escaped (<code>`,</code>) anymore except when using the command's timeout feature.</p>
@@ -1733,20 +1733,19 @@ MySpace = %A_SPACE%</pre>
 <ul>
   <li>A_ThisHotkey: This is the label name (for example: <code>#c</code>) of the hotkey subroutine most recently launched. It's blank if none.</li>
   <li>A_PriorHotkey: Same as above except for the subroutine that ran prior to this one.</li>
-  <li>A_TimeSinceThisHotkey: Milliseconds since the most recently launched hotkey subroutine began. It's -1 if</li>
-  <li>A_ThisHotkey is blank.</li>
+  <li>A_TimeSinceThisHotkey: Milliseconds since the most recently launched hotkey subroutine began. It's -1 if A_ThisHotkey is blank.</li>
   <li>A_TimeSincePriorHotkey: Milliseconds since the prior hotkey subroutine was launched. It's -1 if A_PriorHotkey is blank.</li>
   <li>A_TickCount: Milliseconds since the computer was last restarted. If this value ever exceeds 4294967295 (49.7 days), it will reset back to zero and begin counting from there. </li>
 </ul>
 
 <h2 id="v0.215">0.215 BETA - December 18, 2003</h2>
-<p>Fixed a possible crash in variable assignments that involve more than one source. e.g. statements such as <code>clipboard = %clipboard%%SomeVar%</code></p>
+<p>Fixed a possible crash in variable assignments that involve more than one source, e.g. statements such as <code>clipboard = %clipboard%%SomeVar%</code>.</p>
 <p>Fixed a possible crash-on-startup bug introduced in version 0.212 in conjunction with "else if" support.</p>
 <p>Fixed clipboard being hogged (held open) in rare cases such as displaying the clipboard with SplashTextOn.</p>
 <p>Fixed PixelGetColor to accept negative coordinates without complaining.</p>
 <p>Fixed a very obscure issue where a non-suppressed mouse hotkey such as <code>~LButton::</code> would cause that particular AutoHotkey instance's tray menu and main window context menus to behave strangely.</p>
 <p>Added command SoundSetWaveVolume, which sets the playback volume for files such as WAV and MP3. For example: <code>SoundSetWaveVolume, 50 <em>; Number between 0 and 100, inclusive</em></code>.</p>
-<p>Added command EnvSet, which is needed because unlike AutoIt2, AutoHotkey does not store its variables in the environment. This is because performance would be worse and also because the OS limits env. vars to 32K (AutoHotkey vars, including the clipboard, are essentially unlimited in size). ErrorLevel is set to 1 if there was a problem or 0 otherwise. For example: <code>EnvSet, AutGUI, Some text to put in the variable</code>.</p>
+<p>Added command EnvSet, which is needed because unlike AutoIt2, AutoHotkey does not store its variables in the environment. This is because performance would be worse and also because the OS limits environment variables to 32 KB (AutoHotkey variables, including the clipboard, are essentially unlimited in size). ErrorLevel is set to 1 if there was a problem or 0 otherwise. For example: <code>EnvSet, AutGUI, Some text to put in the variable</code>.</p>
 <p>Note: An EnvGet command is not necessary because dereferencing a blank or undefined variable will automatically trigger that behavior. For example, in the following line, the value of the ProgramFiles variable (if undefined in the script) will be fetched from the environment: <code>TargetFile = %ProgramFiles%\Something\setup.ini</code></p>
 <p>Disabled the feature that jumps to the proper line in notepad or metapad when a syntax error is found (if the script is already open in such an editor) because it doesn't seem to work reliably. If any of you were using it, let me know. Later, I plan to add support for an external script such as "RunWhenSyntaxError.ahk" that will automatically be run if a script launch fails due to a syntax error.</p>
 <p>Improved PixelSearch to set ErrorLevel to 2 if there was an error other than "color not found". It still sets it to 1 if the color isn't found, or 0 if it is. </p>
@@ -1755,7 +1754,7 @@ MySpace = %A_SPACE%</pre>
 <p>Added command WinMenuSelectItem (similar to AutoIt3 command). The menu search terms are not case-sensitive (i.e. File-&gt;Save is the same as file-&gt;save) and the use of ampersand (&amp;) to indicate the underlined letter in a menu item is not necessary. For example:</p>
 <pre>WinMenuSelectItem, Untitled - Notepad, , File, Save
 WinMenuSelectItem, Untitled - Notepad, , 1&amp;, 3&amp;  <em>; Same as above but uses menu item position rather than text.</em></pre>
-<p>Note: The position method exists to support menus that don't contain text (perhaps because they are pictures of text rather than actual text?) Position 1 is the first menu item (e.g. the File Menu). Menu separator lines count as menu items for the purpose of determining the position of a menu item.</p>
+<p>Note: The position method exists to support menus that don't contain text (perhaps because they contain pictures of text rather than actual text). Position 1 is the first menu item (e.g. the File Menu). Menu separator lines count as menu items for the purpose of determining the position of a menu item.</p>
 <p>Added command ControlFocus. For example:</p>
 <pre>ControlFocus, (ControlName or ControlClassNN), WinTitle, WinText, Excludetitle, Excludetext</pre>
 <p>Note: As with all commands that take WinTitle/Text, you can specify the letter A as the title to use the active window, or leave all 4 window parameters blank to use the window most recently found by commands such as IfWinExist and WinWait.</p>
@@ -1937,7 +1936,7 @@ Numpad0::MsgBox, test2  <em>; Now Numpad0 is both a prefix AND a suffix (a suffi
 <p>Run and RunWait now support the following system verbs: properties, edit, print, find, explore, open, and print. For example:</p>
 <pre>Run, properties c:\autoexec.bat  <em>; Bring up the properties dialog for this file.</em>
 Run, edit %A_SCRIPTFULLPATH%  <em>; Perform the associated "edit" action for this file (if it has one).</em></pre>
-<p>Added #Delimiter command. This can be used to change to the default (comma) delimiter, which is used to separate commands and parameters from each other. Note: It cannot be a space, tab (since some editors replace tabs with spaces), or a char that it already in use for another special purpose. For example:</p>
+<p>Added #Delimiter command. This can be used to change the default (comma) delimiter, which is used to separate commands and parameters from each other. Note: It cannot be a space, tab (since some editors replace tabs with spaces), or a char that it already in use for another special purpose. For example:</p>
 <pre>#Delimiter . <em>; Make the delimiter a period rather than a comma.</em></pre>
 <p>Fixed tray menu item "Edit This Script" (again) because it still wasn't working right.</p>
 <p>Enabled tray menu item "Suspend". This function prevents new hotkey subroutines from launching (but Alt-Tab hotkeys will still work). In other words, pressing a hotkey will have no effect at all; it won't even be seen by the system. For example, if <kbd>Ctrl</kbd>+<kbd>C</kbd> is a hotkey, it would do nothing rather than its normal "copy" behavior. Note: "Suspend" will not halt any subroutines that are already running.</p>
