@@ -263,19 +263,19 @@ function ctor_highlighter()
             if (m = PARAMS.match(/^([a-z0-9_\#@\$%\u00A0-\uFFFF]+?)(\s*?)(&gt;=|>=|&gt;|>|&lt;&gt;|<>|&lt;=|<=|&lt;|<|!=|=)(\s*?)(.*?)$/i))
             {
               link = index_data[syntax[3].dict['ifequal']][1];
-              out = wrap(CFS, 'cfs', link) + SEP + expressions(m[1]) + m[2] + m[3] + m[4] + string_param(m[5]);
+              out = wrap(CFS, 'cfs', link) + SEP + expressions(m[1]) + m[2] + m[3] + m[4] + param_array_to_list([m[5]], 'S');
               return PRE + ph('cfs', out);
             }
             else if (m = PARAMS.match(/^([a-z0-9_\#@\$%\u00A0-\uFFFF]+?)(\s+?)((?:not\s+?)?(?:between))(\s+?)(.*?)(\s+?)(and)(\s+?)(.*?)$/i))
             {
               link = index_data[syntax[3].dict['if between']][1];
-              out = wrap(CFS, 'cfs', link) + SEP + expressions(m[1]) + m[2] + wrap(m[3], 'cfs', link) + m[4] + string_param(m[5]) + m[6] + wrap(m[7], 'cfs', link) + m[8] + string_param(m[9]);
+              out = wrap(CFS, 'cfs', link) + SEP + expressions(m[1]) + m[2] + wrap(m[3], 'cfs', link) + m[4] + param_array_to_list([m[5]], 'S') + m[6] + wrap(m[7], 'cfs', link) + m[8] + param_array_to_list([m[9]], 'S');
               return PRE + ph('cfs', out);
             }
             else if (m = PARAMS.match(/^([a-z0-9_\#@\$%\u00A0-\uFFFF]+?)(\s+?)((?:not\s+?)?(in|contains)|(is)(?:\s+?not)?)(\s+?)(.*?)$/i))
             {
               link = index_data[syntax[3].dict['if ' + (m[4] || m[5]).toLowerCase()]][1];
-              out = wrap(CFS, 'cfs', link) + SEP + expressions(m[1]) + m[2] + wrap(m[3], 'cfs', link) + m[6] + string_param(m[7]);
+              out = wrap(CFS, 'cfs', link) + SEP + expressions(m[1]) + m[2] + wrap(m[3], 'cfs', link) + m[6] + param_array_to_list([m[7]], 'S');
               return PRE + ph('cfs', out);
             }
           }
