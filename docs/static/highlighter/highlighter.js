@@ -354,9 +354,9 @@ function ctor_highlighter()
         // Temporarily exclude colon-using elements:
         var temp = {order: []};
         PARAMS = temp_exclude(temp, PARAMS, /".*?"/g);
-        PARAMS = temp_exclude(temp, PARAMS, /\([^(]*\)|\[[^[]*\]|\{[^{]*\}/g);
+        PARAMS = temp_exclude(temp, PARAMS, /\([^()]*\)|\[[^[]]*\]|\{[^{}]*\}/g);
         PARAMS = temp_exclude(temp, PARAMS, /:=/g);
-        PARAMS = temp_exclude(temp, PARAMS, /.*?\?.*?:/g);
+        PARAMS = temp_exclude(temp, PARAMS, /\?.*?:/g);
         // Separate case value from statement:
         var i = PARAMS.indexOf(':');
         if (i == -1)
@@ -674,11 +674,16 @@ function ctor_highlighter()
      */
     function temp_exclude(temp, syntax, regex)
     {
-      return syntax.replace(regex, function(c) {
-        var name = 'temp' + temp.order.length;
-        temp[name] = c; temp.order.push(name);
-        return '<' + name + '>';
-      });
+      var syntax_old;
+      while (syntax != syntax_old) {
+        syntax_old = syntax;
+        syntax = syntax.replace(regex, function(c) {
+          var name = 'temp' + temp.order.length;
+          temp[name] = c; temp.order.push(name);
+          return '<' + name + '>';
+        });
+      }
+      return syntax;
     }
     /**
      * Restore syntax parts excluded via temp_exclude function.
