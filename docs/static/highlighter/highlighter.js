@@ -521,39 +521,36 @@ function ctor_highlighter()
     function param_list_to_array(params)
     {
       params = escape_sequences(params);
-      // Temporarily exclude comma-using elements:
-      var temp = {order: []};
-      params = temp_exclude(temp, params, /".*?"/g);
-      params = temp_exclude(temp, params, /\([^(]*\)|\[[^[]*\]|\{[^{]*\}/g);
-      // Split parameters:
-      params = params.split(',');
-      // Search for forced expressions and adjust param list:
-      var params_new = [];
-      var merge_next_param = false;
-      for (n in params)
+      var arr = [], index_start, mark = 0;
+      while (mark <= params.length)
       {
-        var forced_exp = params[n].match(/^[ \t]*%[ \t]/);
-        params_new.push(params[n]);
-        if (merge_next_param)
+        index_start = mark;
+        while (params[mark] == ' ' || params[mark] == '\t') mark++;
+        if (params[mark] == '%' && (params[mark + 1] == ' ' || params[mark + 1] == '\t'))
+          mark = find_next_delimiter(params, ',', index_start);
+        else while (params[mark] && params[mark] !== ',') mark++;
+        arr.push(params.substring(index_start, mark));
+        mark++;
+      }
+      return arr;
+
+      /** https://github.com/AutoHotkey/AutoHotkey/blob/v1.1/source/util.cpp#L2743 */
+      function find_next_delimiter(string, delimiter, index_start)
+      {
+        var in_quotes = false, open_parens = 0;
+        for (var mark = index_start; mark < string.length; ++mark)
         {
-          merge_next_param = false;
-          if (!forced_exp)
+          if (string[mark] == delimiter && !in_quotes && open_parens <= 0)
+            return mark;
+          switch (string[mark])
           {
-            params_new.splice(-2, 2, params_new.slice(-2).join(','));
-            forced_exp = true;
+            case '"': in_quotes = !in_quotes; break;
+            case '(': case '[': case '{': if (!in_quotes) ++open_parens; break;
+            case ')': case ']': case '}': if (!in_quotes) --open_parens; break;
           }
         }
-        if (forced_exp)
-        {
-          var quote_count = params_new[params_new.length - 1].split('"').length - 1;
-          if (quote_count % 2) // odd number of quotes
-            merge_next_param = true;
-        }
+        return mark;
       }
-      // Restore excluded elements:
-      for (n in params_new)
-        params_new[n] = temp_restore(temp, params_new[n]);
-      return params_new;
     }
     /** Merges excess parameters with the last valid parameter.
      * @param {array} params - An array of parameters.
