@@ -233,7 +233,7 @@ function ctor_highlighter()
       {
         var dir = DIR.toLowerCase();
         var types = index_data[syntax[0].dict[dir]][3]; // parameter types
-        PARAMS = param_list_to_array(PARAMS);
+        PARAMS = param_list_to_array(PARAMS, types.indexOf('E') != -1);
         PARAMS = merge_excess_params(PARAMS, types);
         PARAMS = param_array_to_list(PARAMS, types);
         return PRE + ph('dir', wrap(DIR, 'dir', 0) + SEP + PARAMS);
@@ -282,7 +282,7 @@ function ctor_highlighter()
           // named if statements:
           else if (cfs == 'ifmsgbox' || cfs == 'ifexist' || cfs == 'ifnotexist' || cfs == 'ifinstring' || cfs == 'ifnotinstring' || cfs == 'ifwinactive' || cfs == 'ifnotwinactive' || cfs == 'ifwinexist' || cfs == 'ifnotwinexist' || cfs == 'ifequal' || cfs == 'ifnotequal' || cfs == 'ifless' || cfs == 'iflessorequal' || cfs == 'ifgreater' || cfs == 'ifgreaterorequal')
           {
-            PARAMS = param_list_to_array(PARAMS);
+            PARAMS = param_list_to_array(PARAMS, types.indexOf('E') != -1);
             if (PARAMS.length > types.length)
               PARAMS.push(statements(PARAMS.splice(types.length).join(',')));
             PARAMS = param_array_to_list(PARAMS, types);
@@ -298,7 +298,7 @@ function ctor_highlighter()
               return PRE + ph('cfs', out);
             }
           }
-          PARAMS = param_list_to_array(PARAMS);
+          PARAMS = param_list_to_array(PARAMS, types.indexOf('E') != -1);
           PARAMS = merge_excess_params(PARAMS, types);
           // loop statements:
           if (cfs == 'loop')
@@ -328,7 +328,7 @@ function ctor_highlighter()
           var types = index_data[syntax[6].dict[cmd]][3]; // parameter types
           if (SEP == '(')
             return ASIS;
-          PARAMS = param_list_to_array(PARAMS);
+          PARAMS = param_list_to_array(PARAMS, types.indexOf('E') != -1);
           PARAMS = merge_excess_params(PARAMS, types);
           // MsgBox commands:
           if (cmd == 'msgbox' && PARAMS.length > 1)
@@ -344,6 +344,8 @@ function ctor_highlighter()
             else if (PARAMS[3] && !p4_isTimeout) // 3-parameter mode
               PARAMS.push(PARAMS.splice(2).join(','));
           }
+          else if (cmd == 'winmove' && PARAMS.length <= 2)
+            types = 'EE';
           PARAMS = param_array_to_list(PARAMS, types);
           return PRE + ph('cmd', wrap(CMD, 'cmd', 6) + SEP + PARAMS);
         }
@@ -429,7 +431,7 @@ function ctor_highlighter()
       return innerHTML.replace(/(^[ \t]*[{}]?[ \t]*)([a-z0-9_\#@\$%\u00A0-\uFFFF]+?[ \t]*((?:\+|-)?=)[ \t]*)(.*?(?=[ \t]*<(?:em|sct)\d+><\/(?:em|sct)\d+>(?!<cont\d+>)|$)(?:(?:.*[\n\r][ \t]*?(?:,|<sct\d+>|<cont\d+>).*?(?=[ \t]*<(?:em|sct)\d+><\/(?:em|sct)\d+>|$)))*)/gim, function(_, PRE, VAR_OP, OP, PARAMS)
       {
         var types = (OP == '+=' || OP == '-=') ? 'ES' : 'S'; // parameter types
-        PARAMS = param_list_to_array(PARAMS);
+        PARAMS = param_list_to_array(PARAMS, types.indexOf('E') != -1);
         PARAMS = merge_excess_params(PARAMS, types);
         PARAMS = param_array_to_list(PARAMS, types);
         return PRE + expressions(VAR_OP) + ph('assign', PARAMS);
@@ -516,9 +518,10 @@ function ctor_highlighter()
     }
     /** Converts a comma-separated list of parameters to an array.
      * @param {string} params - A comma-separated list of parameters.
+     * @param {boolean} all_exprs - If true, treat each parameter as expression.
      * @returns {array} An array of parameters.
      */
-    function param_list_to_array(params)
+    function param_list_to_array(params, all_exprs)
     {
       params = escape_sequences(params);
       var arr = [], index_start, mark = 0;
@@ -526,7 +529,7 @@ function ctor_highlighter()
       {
         index_start = mark;
         while (params[mark] == ' ' || params[mark] == '\t') mark++;
-        if (params[mark] == '%' && (params[mark + 1] == ' ' || params[mark + 1] == '\t'))
+        if (params[mark] == '%' && (params[mark + 1] == ' ' || params[mark + 1] == '\t') || all_exprs)
           mark = find_next_delimiter(params, ',', index_start);
         else while (params[mark] && params[mark] !== ',') mark++;
         arr.push(params.substring(index_start, mark));
