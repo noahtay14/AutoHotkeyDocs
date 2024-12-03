@@ -184,7 +184,7 @@
 <p class="loading_code" style="display: none;">Loading code...</p>
 
 <script>
-if (!-[1,]) // Exclude Internet Explorer 8 or below
+if (!!-[1,]) // Exclude Internet Explorer 8 or below
   addOnClickEvent();
 
 function addOnClickEvent() {
