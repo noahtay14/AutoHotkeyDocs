@@ -430,8 +430,10 @@ function ctor_highlighter()
     {
       return innerHTML.replace(/(^[ \t]*[{}]?[ \t]*)([a-z0-9_\#@\$%\u00A0-\uFFFF]+?[ \t]*((?:\+|-)?=)[ \t]*)(.*?(?=[ \t]*<(?:em|sct)\d+><\/(?:em|sct)\d+>(?!<cont\d+>)|$)(?:(?:.*[\n\r][ \t]*?(?:,|<sct\d+>|<cont\d+>).*?(?=[ \t]*<(?:em|sct)\d+><\/(?:em|sct)\d+>|$)))*)/gim, function(_, PRE, VAR_OP, OP, PARAMS)
       {
-        var types = (OP == '+=' || OP == '-=') ? 'ES' : 'S'; // parameter types
-        PARAMS = param_list_to_array(PARAMS, types.indexOf('E') != -1);
+        var types = 'S', is_not_equal = (OP != '=');
+        PARAMS = param_list_to_array(PARAMS, is_not_equal);
+        if (is_not_equal) // -= or +=
+          types = (PARAMS.length == 2 && PARAMS[1].match(/^\s*[smhd]\S*\s*$/i)) ? 'ES' : 'E';
         PARAMS = merge_excess_params(PARAMS, types);
         PARAMS = param_array_to_list(PARAMS, types);
         return PRE + expressions(VAR_OP) + ph('assign', PARAMS);
