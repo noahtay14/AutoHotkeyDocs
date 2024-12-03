@@ -139,7 +139,7 @@ function ctor_highlighter()
         return PRE + ph('sct', wrap(COMMENT, 'cmt', null), COMMENT);
       });
       // multi-line comments:
-      innerHTML = innerHTML.replace(/(^[ \t]*\/\*[\s\S]*?^[ \t]*(\*\/|$(?![\r\n])))/gm, function(COMMENT)
+      innerHTML = innerHTML.replace(/(^[ \t]*\/\*[\s\S]*?(^\s*\*\/|$(?![\r\n])))/gm, function(COMMENT)
       {
         return ph('mct', wrap(COMMENT, 'cmt', null));
       });
