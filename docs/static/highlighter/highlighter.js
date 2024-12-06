@@ -242,7 +242,7 @@ function ctor_highlighter()
     /** Searches for control flow statements and commands, formats them and replaces them with placeholders. */
     function command_alikes(innerHTML)
     {
-      innerHTML = innerHTML.replace(new RegExp('(^[ \\t]*[{}]?[ \\t]*)\\b(?:(' + syntax[3].join('|') + ')|(' + syntax[6].join('|') + '))\\b([ \\t]*,|[ \\t]*<(?:em|sct)\\d+></(?:em|sct)\\d+>[ \\t]*,|\\(|\\{|$|[ \\t](?![ \\t]*' + self.assignOp + '))(.*?(?=[ \\t]*<(?:em|sct)\\d+></(?:em|sct)\\d+>(?!<cont\\d+>)|$)(?:(?:.*[\\n\\r][ \\t]*?(?:,|<sct\\d+>|<cont\\d+>).*?(?=[ \\t]*<(?:em|sct)\\d+></(?:em|sct)\\d+>|$)))*)', 'gim'), function(ASIS, PRE, CFS, CMD, SEP, PARAMS)
+      innerHTML = innerHTML.replace(new RegExp('(^[ \\t]*[{}]?[ \\t]*)\\b(?:(' + syntax[3].join('|') + ')|(' + syntax[6].join('|') + '))\\b([ \\t]*,|\\(|\\{|$|[ \\t](?![ \\t]*' + self.assignOp + '))(.*?(?=[ \\t]*<(?:em|sct)\\d+></(?:em|sct)\\d+>(?!<cont\\d+>)|$)(?:(?:.*[\\n\\r][ \\t]*?(?:,|<(?:em|sct)\\d+></(?:em|sct)\\d+>(?:\\s*,)?|<cont\\d+>).+?(?=[ \\t]*<(?:em|sct)\\d+></(?:em|sct)\\d+>|$)))*)', 'gim'), function(ASIS, PRE, CFS, CMD, SEP, PARAMS)
       {
         if (CFS) // control flow statements:
         {
@@ -428,7 +428,7 @@ function ctor_highlighter()
     /** Searches for legacy assignments, formats them and replaces them with placeholders. */
     function legacy_assignments(innerHTML)
     {
-      return innerHTML.replace(/(^[ \t]*[{}]?[ \t]*)([a-z0-9_\#@\$%\u00A0-\uFFFF]+?[ \t]*((?:\+|-)?=)[ \t]*)(.*?(?=[ \t]*<(?:em|sct)\d+><\/(?:em|sct)\d+>(?!<cont\d+>)|$)(?:(?:.*[\n\r][ \t]*?(?:,|<sct\d+>|<cont\d+>).*?(?=[ \t]*<(?:em|sct)\d+><\/(?:em|sct)\d+>|$)))*)/gim, function(_, PRE, VAR_OP, OP, PARAMS)
+      return innerHTML.replace(/(^[ \t]*[{}]?[ \t]*)([a-z0-9_\#@\$%\u00A0-\uFFFF]+?[ \t]*([+-]?=)[ \t]*)(.*?(?=[ \t]*<(?:em|sct)\d+><\/(?:em|sct)\d+>(?!<cont\d+>)|$)(?:(?:.*[\n\r][ \t]*?(?:,|<(em|sct)\d+><\/(em|sct)\d+>(\s*,)?|<cont\d+>).+?(?=[ \t]*<(?:em|sct)\d+><\/(?:em|sct)\d+>|$)))*)/gim, function(_, PRE, VAR_OP, OP, PARAMS)
       {
         var types = 'S', is_not_equal = (OP != '=');
         PARAMS = param_list_to_array(PARAMS, is_not_equal);
