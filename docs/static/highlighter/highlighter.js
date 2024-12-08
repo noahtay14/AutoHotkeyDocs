@@ -223,7 +223,7 @@ function ctor_highlighter()
     /** Searches for control flow statements, formats them and replaces them with placeholders. */
     function control_flow_statements(innerHTML)
     {
-      innerHTML = innerHTML.replace(new RegExp('(^[ \\t]*[{}]?[ \\t]*)\\b(' + syntax[3].join('|') + ')\\b([ \\t]+<(?:em|sct)\\d+></(?:em|sct)\\d+>[ \\t]*,|\\(|\\{|$|[ \\t](?![ \\t]*' + self.assignOp + '))(.*?(?=[ \\t]*\\{?[ \\t]*(?:[ \\t]+<(?:em|sct)\\d+></(?:em|sct)\\d+>(?!<cont\\d+>)|$))(?:(?:.*[\\n\\r][ \\t]*?(?:,|<sct\\d+>|<cont\\d+>).*?(?=[ \\t]*<(?:em|sct)\\d+></(?:em|sct)\\d+>|$)))*)', 'gim'), function(ASIS, PRE, CFS, SEP, PARAMS)
+      innerHTML = innerHTML.replace(new RegExp('(^[ \\t]*[{}]?[ \\t]*)\\b(' + syntax[3].join('|') + ')\\b(\\(|\\{|$|[ \\t](?![ \\t]*' + self.assignOp + '))(.*?(?=[ \\t]*\\{?[ \\t]*(?:[ \\t]+<(?:em|sct)\\d+></(?:em|sct)\\d+>(?!<cont\\d+>)|$))(?:(?:.*[\\n\\r][ \\t]*?(?:,|<(?:em|sct)\\d+></(?:em|sct)\\d+>(?:\\s*,)?|<cont\\d+>).+?(?=[ \\t]*<(?:em|sct)\\d+></(?:em|sct)\\d+>|$)))*)', 'gim'), function(ASIS, PRE, CFS, SEP, PARAMS)
       {
         var cfs = CFS.toLowerCase(), out, link;
         var types = index_data[syntax[3].dict[cfs]][3]; // parameter types
@@ -326,7 +326,7 @@ function ctor_highlighter()
     /** Searches for hotkeys, formats them and replaces them with placeholders. */
     function hotkeys(innerHTML)
     {
-      var key_names = '(?:L|R|M)Button|XButton[1-2]|Wheel(?:Down|Up|Left|Right)|CapsLock|Space|Tab|Enter|Escape|Esc|Backspace|BS|ScrollLock|Delete|Del|Insert|Ins|Home|End|PgUp|PgDn|Up|Down|Left|Right|Numpad(?:[0-9]|Dot|Ins|End|Down|PgDn|Left|Clear|Right|Home|Up|PgUp|Del|Div|Mult|Add|Sub|Enter)|NumLock|F(?:2[0-4]|1[0-9]|[1-9])|LWin|RWin|(?:L|R)?(?:Control|Ctrl|Shift|Alt)|Browser_(?:Back|Forward|Refresh|Stop|Search|Favorites|Home)|Volume_(?:Mute|Down|Up)|Media_(?:Next|Prev|Stop|Play_Pause)|Launch_(?:Mail|Media|App1|App2)|AppsKey|PrintScreen|CtrlBreak|Pause|Help|Sleep|SC[0-9a-f]{1,3}|VK[0-9a-f]{1,2}|Joy(?:3[0-2]|2[0-9]|1[0-9]|[1-9])|\\S|`\\S|&.+?;';
+      var key_names = '(?:L|R|M)Button|XButton[1-2]|Wheel(?:Down|Up|Left|Right)|CapsLock|Space|Tab|Enter|Escape|Esc|Backspace|BS|ScrollLock|Delete|Del|Insert|Ins|Home|End|PgUp|PgDn|Up|Down|Left|Right|Numpad(?:[0-9]|Dot|Ins|End|Down|PgDn|Left|Clear|Right|Home|Up|PgUp|Del|Div|Mult|Add|Sub|Enter)|NumLock|F(?:2[0-4]|1[0-9]|[1-9])|LWin|RWin|(?:L|R)?(?:Control|Ctrl|Shift|Alt)|Browser_(?:Back|Forward|Refresh|Stop|Search|Favorites|Home)|Volume_(?:Mute|Down|Up)|Media_(?:Next|Prev|Stop|Play_Pause)|Launch_(?:Mail|Media|App1|App2)|AppsKey|PrintScreen|CtrlBreak|Pause|Help|Sleep|SC[0-9a-f]{1,3}|VK[0-9a-f]{1,2}|(?:1[0-6]|[1-9])?Joy(?:3[0-2]|2[0-9]|1[0-9]|[1-9])|\\S|`\\S|&.+?;';
       return innerHTML.replace(new RegExp('^([ \\t]*)((?:(?:[#!^+*~$]|&lt;|&gt;)*(?:' + key_names + ')(?:[ \\t]+up)?|~?(?:' + key_names + ')[ \\t]+&amp;[ \\t]+~?(?:' + key_names + ')(?:[ \\t]+up)?))::([ \\t]*)(.*)(?=[ \\t]+<(?:em|sct)\\d+></(?:em|sct)\\d+>|$)', 'gim'), function(ASIS, PRE, HK, SPACE, ACTION)
       {
         var out = wrap(escape_sequences(HK) + '::', 'lab', null) + SPACE;
