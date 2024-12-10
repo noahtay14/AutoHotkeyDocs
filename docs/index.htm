@@ -1,66 +1,200 @@
-<!DOCTYPE HTML>
-<html lang="en">
-<head>
-<title>Quick Reference | AutoHotkey v2</title>
-<meta name="description" content="This page contains information about the currently used version, the authors, the license, and a quick overview of the documentation." />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link rel="canonical" href="./" />
-<link href="static/theme.css" rel="stylesheet" type="text/css" />
-<script src="static/content.js" type="text/javascript"></script>
-</head>
-<body>
+#SingleInstance, force
+if (A_ScreenDPI*100//96 != 100) {
+	Run, ms-settings:display
+	msgbox, 0x1030, WARNING!!, % "Your Display Scale seems to be a value other than 100`%. This means the macro will NOT work correctly!`n`nTo change this, right click on your Desktop -> Click 'Display Settings' -> Under 'Scale & Layout', set Scale to 100`% -> Close and Restart Roblox before starting the macro.", 60
+	ExitApp
+}
+If !FileExist("Settings.ini") {
+	Msgbox,,Fisch Macro,You don't have a settings file yet. Would you like to create one? Press OK to proceed
+	IniWrite, 0.05, Settings.ini, Fisch, Control 
+}
+IniRead, Control, Settings.ini, Fisch, Control 
+If (Control = "ERROR") {
+	IniWrite, 0.05, Settings.ini, Fisch, Control 
+	Control := "0.05"
+}
+Control := StrSplit(Control, "|")
+If (Control[2]) {
+	Msgbox The control settings are outdated.`nRestored the settings to their default values.
+	IniWrite, 0.05, Settings.ini, Fisch, Control 
+	ExitApp
+}
+Control := Floor(96+(Control[1]*326.67)) ; calculating the catch bar size pretty pro right
+Tooltip % Control
+If (!Control) {
+	Msgbox, Failed to retrieve control from settings.ini
+	ExitApp
+}
+if GetRobloxHWND() {
+	x := A_ScreenWidth
+	y := A_ScreenHeight
+	WinActivate, ahk_exe RobloxPlayerbeta.exe
+	WinMove, ahk_exe RobloxPlayerBeta.exe,, x/2-408, y/2-408, 100, 100
+} else {
+	Msgbox Roblox need to be opened
+	ExitApp
+}
+Reels()
+Timer := A_TickCount
+Loop,
+{
+	Send {down}{enter}
+	If (A_TickCount - Timer >= 40000) { 
+		Reels()
+		Timer := A_TickCount
+	}
+	PixelSearch,,, 246, 533, 569, 533, 0xf1f1f1, 20, FastRGB
+	if (ErrorLevel = 0) {
+		PixelSearch,,, 246, 533, 569, 533, 0x434b5b, 3, FastRGB 
+		If (ErrorLevel = 0) {
+			MouseMove, 100, 400
+			Loop
+			{
+				PixelSearch,,, 246, 533, 569, 533, 0x434b5b, 3, FastRGB
+				if (ErrorLevel = 1) {
+					Reels()
+					tooltip
+					Timer := A_TickCount
+					Break
+				}
+				PixelSearch,,, 246, 533, 569, 533, 0xf1f1f1, 20,FastRGB
+				If (ErrorLevel = 0) { 
+					Loop
+					{
+						PixelSearch, CurrentTarget,, 246, 533, 569, 533, 0x434b5b, 3, FastRGB
+						If (ErrorLevel = 1) {
+							Break
+						} else {
+							If (CurrentTarget <= (Control + 247 - 10)) {
+								Sleep 40
+								tooltip go left
+							} else If (CurrentTarget >= (568 - Control + 10)) {
+								Click, Down
+								tooltip go right
+								Loop
+								{
+									Tooltip, % A_Index
+									PixelSearch, CurrentTarget,, 246, 533, 569, 533, 0x434b5b, 3, FastRGB
+									If (ErrorLevel = 0) {
+										If (CurrentTarget <= (568 - Control)) {
+											Break
+										}
+									} else {
+										Break
+									}
+								}
+								Click, Up
+								AtRight := True
+							} else {
+								PixelSearch, CurrentBarPosition,, 246, 533, 569, 533, 0xf1f1f1, 20,FastRGB ; calculation stuff
+								If (ErrorLevel = 0) {
+									PixelSearch, CurrentTarget,, 246, 533, 569, 533, 0x434b5b, 3, FastRGB
+									CurrentBarPosition := CurrentBarPosition + (Control / 2)
+									Distance := CurrentTarget - CurrentBarPosition
+									Percentage := (Distance / Control) * 100
+									Tooltip % Percentage "x" Distance "x" CurrentBarPosition
+									if (Percentage >= 0) {
+										Val := Floor(140 + ((440 - 140) * (Percentage / 100)))
+										tooltip % Val
+										If (Val = 0) {
+											Reels(30)
+										} else {
+											Reels(Val)
+										}
+									} else {
+										Val := 0 + ((100 - 0) * (Percentage / 100))
+										Val := Floor((-1 * Val))
+										if (Val < 30) {
+											tooltip, i'd click
+											Reels(30)
+										} else {
+											tooltip % Val - 30 " sleeptime"
+											Sleep % Val - 30
+										}
+									}
+								} else {
+									Break
+								}
+							}
+						}
+					}
+					PixelSearch, CurrentTarget,, 246, 533, 569, 533, 0x434b5b, 3, FastRGB
+					If (CurrenTarget > 408) {
+						AtRight := True
+					}
+				} else {
+					PixelSearch, CurrentTarget,, 246, 533, 569, 533, 0x434b5b, 3, FastRGB
+					If (ErrorLevel = 0) {
+						If (CurrentTarget <= (Control + 247)) {
+							Sleep 40
+							tooltip go left
+						} else If (CurrentTarget >= (568 - Control - 10)) {
+							Click, Down
+							tooltip go right
+							Loop
+							{
+								Tooltip, % A_Index " 2"
+								PixelSearch, CurrentTarget,, 246, 533, 569, 533, 0x434b5b, 3, FastRGB
+								If (ErrorLevel = 0) {
+									If (CurrentTarget <= (568 - Control + 10)) {
+										Break
+									}
+								} else {
+									Break
+								}
+							}
+							Click, Up
+						} else {
+							If (AtRight and (CurrentTarget >= 408)) {
+								Sleep 100
+								AtRight := false
+							} else {
+								Tooltip, i reel 300
+								Reels(300, True)
+							}
+						}
 
-<a id="ahklogo" href="https://www.autohotkey.com" target="_blank"><img src="static/ahk_logo.svg" onerror="this.src='static/ahk_logo.png'; this.onerror=null;" alt="AutoHotkey"></a>
-<h1>Version <a href="ChangeLog.htm"><!--ver-->2.0.18<!--/ver--></a></h1>
-<p><a href="https://www.autohotkey.com">https://www.autohotkey.com</a></p>
-<p>&copy; 2014 Steve Gray, Chris Mallett, portions &copy; <a href="https://www.autoitscript.com/">AutoIt Team</a> and various others</p>
-<p style="font-size:85%">Software License: <a href="license.htm">GNU General Public License</a></p>
-
-<h2 id="Quick_Reference">Quick Reference</h2>
-<p>Getting started:</p>
-<ul>
-  <li><a href="Program.htm">How to use the program</a></li>
-  <li>Tutorials:
-    <ul>
-      <li><a href="howto/RunExamples.htm">How to run example code</a></li>
-      <li><a href="howto/WriteHotkeys.htm">How to write hotkeys</a></li>
-      <li><a href="howto/SendKeys.htm">How to send keystrokes</a></li>
-      <li><a href="howto/RunPrograms.htm">How to run programs</a></li>
-      <li><a href="howto/ManageWindows.htm">How to manage windows</a></li>
-      <li><a href="Tutorial.htm">Beginner tutorial by tidbit</a></li>
-    </ul>
-  </li>
-  <li><a href="misc/Editors.htm">Text editors with AutoHotkey support</a></li>
-  <li><a href="FAQ.htm">Frequently asked questions</a></li>
-</ul>
-<p>Scripts:</p>
-<ul>
-  <li><a href="Concepts.htm">Concepts and conventions</a>: explanations of various things you need to know.</li>
-  <li><a href="Language.htm">Scripting language</a>: how to write scripts.</li>
-  <li><a href="Scripts.htm">Miscellaneous topics</a></li>
-  <li><a href="lib/index.htm">List of built-in functions</a></li>
-  <li><a href="Variables.htm">Variables and expressions</a></li>
-  <li><a href="Functions.htm">How to use functions</a></li>
-  <li><a href="Objects.htm">Objects</a></li>
-  <li><a href="Scripts.htm#idebug">Interactive debugging</a></li>
-</ul>
-<p>Keyboard and mouse:</p>
-<ul>
-  <li><a href="Hotkeys.htm">Hotkeys (mouse, controller and keyboard shortcuts)</a></li>
-  <li><a href="Hotstrings.htm">Hotstrings and auto-replace</a></li>
-  <li><a href="misc/Remap.htm">Remapping keys and buttons</a></li>
-  <li><a href="KeyList.htm">List of keys, mouse buttons and controller controls</a></li>
-</ul>
-<p>Other:</p>
-<ul>
-  <li><a href="lib/DllCall.htm">DllCall</a></li>
-  <li><a href="misc/RegEx-QuickRef.htm">RegEx quick reference</a></li>
-</ul>
-
-<h2 id="Acknowledgements">Acknowledgements</h2>
-<p>A special thanks to Jonathan Bennett, whose generosity in releasing  AutoIt v2 as free software in 1999 served as an inspiration and time-saver for myself and many others worldwide. In addition, many of AutoHotkey's enhancements to the AutoIt v2 command set, as well as the Window Spy and the old script compiler, were adapted directly from the AutoIt v3 source code. So thanks to Jon and the other AutoIt authors for those as well.</p>
-<p>Finally, AutoHotkey would not be what it is today without <a href="misc/Acknowledgements.htm">these other individuals</a>.</p>
-<p><em>~ Chris Mallett</em></p>
-</body>
-</html>
+						PixelSearch, CurrentTarget,, 246, 533, 569, 533, 0x434b5b, 3, FastRGB
+						If (CurrenTarget > 408) {
+							AtRight := True
+						}
+					}
+				}
+			}
+		}
+	}
+}
+ExitApp
+$Space::ExitApp
+Reels(x := 0, Stop := false) {
+	If (!x) {
+		Sleep 2000
+		Click, Down, 100, 400
+		Sleep 2000
+		Click, Up, 100, 400
+		Sleep 2000
+		Send \
+		Return True
+	}
+	Click, Down
+	Timer := A_TickCount
+	Loop
+	{
+		If (Stop) {
+			PixelSearch,,, 246, 533, 569, 533, 0xf1f1f1, 20, FastRGB
+			If (ErrorLevel = 0) {
+				Whitebar := true
+				Break
+			}
+		}
+		If (A_TickCount - Timer >= x) {
+			Break
+		}
+	}
+	Click, Up
+	Return % Whitebar
+}
+GetRobloxHWND() {
+	if (hwnd := WinExist("Roblox ahk_exe RobloxPlayerBeta.exe"))
+		return hwnd
+} ; yoooo fire macro with 200 line???
